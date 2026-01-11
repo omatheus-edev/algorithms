@@ -62,4 +62,36 @@ public final class BinarySearchTest {
         @NotNull Double[] decimals = {1.1, 2.2, 3.3, 4.4};
         assertEquals(1, BinarySearch.find(decimals, 2.2));
     }
+
+    @Test
+    void testPrimitiveInt() {
+        int[] numbers = {100, 200, 300, 400};
+        assertEquals(1, BinarySearch.find(numbers, 200));
+        assertEquals(-1, BinarySearch.find(numbers, 999));
+    }
+
+    @Test
+    void testPrimitiveLong() {
+        long[] numbers = {1000L, 2000L, 3000L, 4000L};
+        assertEquals(3, BinarySearch.find(numbers, 4000L));
+    }
+
+    @Test
+    void testPrimitiveFloat() {
+        float[] numbers = {1.5f, 2.5f, Float.POSITIVE_INFINITY};
+        assertEquals(1, BinarySearch.find(numbers, 2.5f));
+        assertEquals(2, BinarySearch.find(numbers, Float.POSITIVE_INFINITY));
+    }
+
+    @Test
+    void testFloatNaN() {
+        float[] numbers = {1.1f, 2.2f, Float.NaN};
+        assertEquals(2, BinarySearch.find(numbers, Float.NaN));
+    }
+
+    @Test
+    void testPrimitiveDouble() {
+        double[] numbers = {0.1, 0.2, 0.5, 0.9};
+        assertEquals(2, BinarySearch.find(numbers, 0.5));
+    }
 }

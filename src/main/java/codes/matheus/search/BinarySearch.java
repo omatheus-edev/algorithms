@@ -53,4 +53,118 @@ public final class BinarySearch {
         }
         return -1;
     }
+
+    /**
+     * This method implements a binary search algorithm for primitive int types, in order to optimize the search.
+     * This method uses a primitive array of type int for better performance.
+     *
+     * @param array a sorted int array
+     * @param key the key to search in array
+     * @return the index of key in the array or -1 if not found
+     *
+     * */
+    public static int find(int[] array, @Range(from = 0, to = Integer.MAX_VALUE) int key) {
+        int left = 0;
+        int right = array.length - 1;
+
+        while (left <= right) {
+            int median = (left + right) >>> 1;
+            if (array[median] == key) {
+                return median;
+            } else if (array[median] < key) {
+                left = median + 1;
+            } else {
+                right = median - 1;
+            }
+        }
+        return -1;
+    }
+
+
+    /**
+     * This method implements a binary search algorithm for primitive long types, in order to optimize the search.
+     * This method uses a primitive array of type long for better performance.
+     *
+     * @param array a sorted long array
+     * @param key the key to search in array
+     * @return the index of key in the array or -1 if not found
+     *
+     * */
+    public static int find(long[] array, @Range(from = 0, to = Long.MAX_VALUE) long key) {
+        int left = 0;
+        int right = array.length - 1;
+
+        while (left <= right) {
+            int median = (left + right) >>> 1;
+            if (array[median] == key) {
+                return median;
+            } else if (array[median] < key) {
+                left = median + 1;
+            } else {
+                right = median - 1;
+            }
+        }
+        return -1;
+    }
+
+
+    /**
+     * This method implements a binary search algorithm for primitive double types, in order to optimize the search.
+     * This method uses a primitive array of type double for better performance.
+     *
+     *
+     * @param array a sorted double array
+     * @param key the key to search in array
+     * @return the index of key in the array or -1 if not found
+     *
+     * */
+    public static int find(double[] array, @Range(from = 0, to = Long.MAX_VALUE) double key) {
+        int left = 0;
+        int right = array.length - 1;
+
+        while (left <= right) {
+            int median = (left + right) >>> 1;
+            int compute = Double.compare(key, array[median]);
+
+            if (compute == 0) {
+                return median;
+            }
+            else if (compute > 0) {
+                left = median + 1;
+            } else {
+                right = median - 1;
+            }
+        }
+        return -1;
+    }
+
+    /**
+     * This method implements a binary search algorithm for primitive float types, in order to optimize the search.
+     * This method uses a primitive array of type float for better performance.
+     *
+     *
+     * @param array a sorted float array
+     * @param key the key to search in array
+     * @return the index of key in the array or -1 if not found
+     *
+     * */
+    public static int find(float[] array, @Range(from = 0, to = Long.MAX_VALUE) float key) {
+        int left = 0;
+        int right = array.length - 1;
+
+        while (left <= right) {
+            int median = (left + right) >>> 1;
+            int compute = Float.compare(key, array[median]);
+
+            if (compute == 0) {
+                return median;
+            }
+            else if (compute > 0) {
+                left = median + 1;
+            } else {
+                right = median - 1;
+            }
+        }
+        return -1;
+    }
 }
