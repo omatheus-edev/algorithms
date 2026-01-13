@@ -1,0 +1,271 @@
+package codes.matheus.datastructures.tree;
+
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
+
+import java.util.LinkedList;
+import java.util.Queue;
+
+/**
+ * This class represents a general Binary Tree data structure.
+ *
+ * <p>A binary tree is a tree data structure in which each node has at most two children,
+ * referred to as the left child and the right child. Unlike a Binary Search Tree (BST),
+ * there is no ordering constraint between parent and children nodes.</p>
+ *
+ * <p>Common operations (e.g., traversals) have O(n) time complexity in the average and worst cases.
+ * Worst-case space complexity is O(n) for n nodes. Height-related operations may be O(h),
+ * where h is the height of the tree (h can be up to n in a skewed tree).</p>
+ *
+ * @author Matheus Sousa (https://github.com/omatheus-edev)
+ */
+public final class BinaryTree<T> {
+
+    private @Nullable Node<@NotNull T> root;
+
+    /**
+     * Constructor
+     */
+    public BinaryTree() {
+        root = null;
+    }
+
+    /**
+     * Parameterized constructor
+     *
+     * @param root Value to be inserted in the root
+     */
+    public BinaryTree(@NotNull T root) {
+        this.root = new Node<>(root);
+    }
+
+    /**
+     * Insert a value into a node of Binary Tree
+     *
+     * @param value Value to be inserted
+     * */
+    public void insert(@NotNull T value) {
+        @NotNull Node<@NotNull T> node = new Node<>(value);
+        if (root == null) {
+            this.root = node;
+        } else {
+            @NotNull Queue<@NotNull Node<@NotNull T>> queue = new LinkedList<>();
+            queue.add(root);
+
+            while (!queue.isEmpty()) {
+                @NotNull Node<@NotNull T> temp = queue.poll();
+
+                if (temp.left == null) {
+                    temp.left = node;
+                    return;
+                } else {
+                    queue.add(temp.left);
+                }
+
+                if (temp.right == null) {
+                    temp.right = node;
+                    return;
+                } else {
+                    queue.add(temp.right);
+                }
+            }
+        }
+    }
+
+    /**
+     * Deletes a given value from the Binary Tree
+     *
+     * @param value Value to be deleted
+     */
+    public void remove(@NotNull T value) {
+        if (root == null) {
+            return;
+        }
+
+        if (root.left == null && root.right == null) {
+            if (root.value.equals(value)) {
+                root = null;
+            }
+            return;
+        }
+
+        @NotNull Queue<@NotNull Node<@NotNull T>> queue = new LinkedList<>();
+        queue.add(root);
+
+        @Nullable Node<@NotNull T> target = null;
+        @Nullable Node<@NotNull T> last = null;
+
+        while (!queue.isEmpty()) {
+            last = queue.poll();
+
+            if (last.value.equals(value)) {
+                target = last;
+            }
+
+            if (last.left != null) {
+                queue.add(last.left);
+            }
+            if (last.right != null) {
+                queue.add(last.right);
+            }
+        }
+
+        if (target != null) {
+            @NotNull T deepest = last.value;
+            deleteDeepestNode(last);
+
+            if (target != last) {
+                target.value = deepest;
+            }
+        }
+    }
+
+    /**
+     * Locate the parent of the given node and remove the reference to it.
+     *
+     * @param last The node that should be disconnected from the tree.
+     */
+    private void deleteDeepestNode(@NotNull Node<@NotNull T> last) {
+        @NotNull Queue<@NotNull Node<@NotNull T>> deepestQueue = new LinkedList<>();
+        deepestQueue.add(root);
+
+        while (!deepestQueue.isEmpty()) {
+            @NotNull Node<@NotNull T> temp = deepestQueue.poll();
+
+            if (temp.left == last) {
+                temp.left = null;
+                return;
+            } else if (temp.left != null) {
+                deepestQueue.add(temp.left);
+            }
+
+            if (temp.right == last) {
+                temp.right = null;
+                return;
+            } else if (temp.right != null) {
+                deepestQueue.add(temp.right);
+            }
+        }
+    }
+
+    /**
+     * Method to check if the tree contains a value
+     *
+     * @param value Value to look for
+     * @return Returns true or false depending on whether the tree contains the value.
+     * */
+    public boolean contains(@NotNull T value) {
+        if (root == null) {
+            return false;
+        }
+
+        @NotNull Queue<@NotNull Node<@NotNull T>> queue = new LinkedList<>();
+        queue.add(root);
+
+        while (!queue.isEmpty()) {
+            @NotNull Node<@NotNull T> node = queue.poll();
+
+            if (node.value.equals(value)) {
+                return true;
+            }
+            if (node.left != null) {
+                queue.add(node.left);
+            }
+            if (node.right != null) {
+                queue.add(node.right);
+            }
+        }
+        return false;
+    }
+
+    /**
+     * Method for printing the tree in order
+     * */
+    public void inOrder() {
+        inOrder(root);
+        System.out.println();
+    }
+
+    /**
+     * Prints leftChild - root - rightChild
+     *
+     * @param node The local root of the binary tree
+     */
+    private void inOrder(@Nullable Node<@NotNull T> node) {
+        if (node == null) return;
+        inOrder(node.left);
+        System.out.print(node.value + " ");
+        inOrder(node.right);
+    }
+
+    /**
+     * Method for printing the tree in pre-order
+     * */
+    public void preOrder() {
+        preOrder(root);
+        System.out.println();
+    }
+
+    /**
+     * Prints root - leftChild - rightChild
+     *
+     * @param node The local root of the binary tree
+     */
+    private void preOrder(@Nullable Node<T> node) {
+        if (node == null) return;
+        System.out.print(node.value + " ");
+        preOrder(node.left);
+        preOrder(node.right);
+    }
+
+    /**
+     * Method for printing the tree in post-order
+     * */
+    public void postOrder() {
+        postOrder(root);
+        System.out.println();
+    }
+
+    /**
+     * Prints leftChild - rightChild - root
+     *
+     * @param node The local root of the binary tree
+     */
+    private void postOrder(@Nullable Node<T> node) {
+        if (node == null) return;
+        postOrder(node.left);
+        postOrder(node.right);
+        System.out.print(node.value + " ");
+    }
+
+    /**
+     * This class represents a node in a Binary Tree.
+     * Where each node has a left and right child with a defined pattern.
+     *
+     * @author Matheus Sousa (https://github.com/omatheus-edev)
+     * */
+    private final static class Node<T> {
+        @NotNull T value;
+        @Nullable Node<@NotNull T> left;
+        @Nullable Node<@NotNull T> right;
+
+        /**
+         * Constructor of Node
+         *
+         * @param value Value of the node
+         * */
+        public Node(@NotNull T value) {
+            this.value = value;
+        }
+
+        @SuppressWarnings("DataFlowIssue")
+        @Override
+        public @NotNull String toString() {
+            return "Node{" +
+                    "value=" + value +
+                    ", left=" + left.value +
+                    ", right=" + right.value +
+                    '}';
+        }
+    }
+}
