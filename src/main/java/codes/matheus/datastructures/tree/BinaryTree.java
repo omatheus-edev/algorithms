@@ -2,6 +2,7 @@ package codes.matheus.datastructures.tree;
 
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import org.jetbrains.annotations.Range;
 
 import java.util.LinkedList;
 import java.util.Queue;
@@ -22,6 +23,8 @@ import java.util.Queue;
 public final class BinaryTree<T> {
 
     private @Nullable Node<@NotNull T> root;
+    @Range(from = 0, to = Integer.MAX_VALUE)
+    private int size = 0;
 
     /**
      * Constructor
@@ -57,19 +60,20 @@ public final class BinaryTree<T> {
 
                 if (temp.left == null) {
                     temp.left = node;
-                    return;
+                    break;
                 } else {
                     queue.add(temp.left);
                 }
 
                 if (temp.right == null) {
                     temp.right = node;
-                    return;
+                    break;
                 } else {
                     queue.add(temp.right);
                 }
             }
         }
+        size++;
     }
 
     /**
@@ -85,6 +89,7 @@ public final class BinaryTree<T> {
         if (root.left == null && root.right == null) {
             if (root.value.equals(value)) {
                 root = null;
+                size--;
             }
             return;
         }
@@ -113,6 +118,7 @@ public final class BinaryTree<T> {
         if (target != null) {
             @NotNull T deepest = last.value;
             deleteDeepestNode(last);
+            size--;
 
             if (target != last) {
                 target.value = deepest;
@@ -146,6 +152,41 @@ public final class BinaryTree<T> {
                 deepestQueue.add(temp.right);
             }
         }
+    }
+
+    /**
+     * Get a node into a node of Binary Tree
+     *
+     * @param value Value to be searched for in the Binary Tree
+     * @return Returns the found node or returns null
+     * */
+    public @Nullable Node<@NotNull T> search(@NotNull T value) {
+        if (root == null) {
+            return null;
+        }
+
+        @NotNull Queue<@NotNull Node<@NotNull T>> queue = new LinkedList<>();
+        queue.add(root);
+
+        while (!queue.isEmpty()) {
+            @NotNull Node<@NotNull T> node = queue.poll();
+
+            if (node.value.equals(value)) {
+                return node;
+            }
+            if (node.left != null) {
+                queue.add(node.left);
+            }
+            if (node.right != null) {
+                queue.add(node.right);
+            }
+        }
+        return null;
+    }
+
+    @Range(from = 0, to = Integer.MAX_VALUE)
+    public int size() {
+        return size;
     }
 
     /**
@@ -244,7 +285,7 @@ public final class BinaryTree<T> {
      *
      * @author Matheus Sousa (https://github.com/omatheus-edev)
      * */
-    private final static class Node<T> {
+    public final static class Node<T> {
         @NotNull T value;
         @Nullable Node<@NotNull T> left;
         @Nullable Node<@NotNull T> right;
@@ -256,6 +297,18 @@ public final class BinaryTree<T> {
          * */
         public Node(@NotNull T value) {
             this.value = value;
+        }
+
+        public @NotNull T getValue() {
+            return value;
+        }
+
+        public @Nullable Node<@NotNull T> getLeft() {
+            return left;
+        }
+
+        public @Nullable Node<@NotNull T> getRight() {
+            return right;
         }
 
         @SuppressWarnings("DataFlowIssue")
