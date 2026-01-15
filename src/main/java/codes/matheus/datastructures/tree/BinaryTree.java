@@ -19,10 +19,11 @@ import java.util.Queue;
  * where h is the height of the tree (h can be up to n in a skewed tree).</p>
  *
  * @author Matheus Sousa (https://github.com/omatheus-edev)
+ * @param <T> The type of elements in this tree
  */
 public final class BinaryTree<T> {
 
-    private @Nullable Node<@NotNull T> root;
+    private @Nullable Node<T> root;
     @Range(from = 0, to = Integer.MAX_VALUE)
     private int size = 0;
 
@@ -48,15 +49,15 @@ public final class BinaryTree<T> {
      * @param value Value to be inserted
      * */
     public void insert(@NotNull T value) {
-        @NotNull Node<@NotNull T> node = new Node<>(value);
+        @NotNull Node<T> node = new Node<>(value);
         if (root == null) {
             this.root = node;
         } else {
-            @NotNull Queue<@NotNull Node<@NotNull T>> queue = new LinkedList<>();
+            @NotNull Queue<Node<T>> queue = new LinkedList<>();
             queue.add(root);
 
             while (!queue.isEmpty()) {
-                @NotNull Node<@NotNull T> temp = queue.poll();
+                @NotNull Node<T> temp = queue.poll();
 
                 if (temp.left == null) {
                     temp.left = node;
@@ -94,11 +95,11 @@ public final class BinaryTree<T> {
             return;
         }
 
-        @NotNull Queue<@NotNull Node<@NotNull T>> queue = new LinkedList<>();
+        @NotNull Queue<Node<T>> queue = new LinkedList<>();
         queue.add(root);
 
-        @Nullable Node<@NotNull T> target = null;
-        @Nullable Node<@NotNull T> last = null;
+        @Nullable Node<T> target = null;
+        @Nullable Node<T> last = null;
 
         while (!queue.isEmpty()) {
             last = queue.poll();
@@ -131,12 +132,12 @@ public final class BinaryTree<T> {
      *
      * @param last The node that should be disconnected from the tree.
      */
-    private void deleteDeepestNode(@NotNull Node<@NotNull T> last) {
-        @NotNull Queue<@NotNull Node<@NotNull T>> deepestQueue = new LinkedList<>();
+    private void deleteDeepestNode(@NotNull Node<T> last) {
+        @NotNull Queue<Node<T>> deepestQueue = new LinkedList<>();
         deepestQueue.add(root);
 
         while (!deepestQueue.isEmpty()) {
-            @NotNull Node<@NotNull T> temp = deepestQueue.poll();
+            @NotNull Node<T> temp = deepestQueue.poll();
 
             if (temp.left == last) {
                 temp.left = null;
@@ -160,16 +161,16 @@ public final class BinaryTree<T> {
      * @param value Value to be searched for in the Binary Tree
      * @return Returns the found node or returns null
      * */
-    public @Nullable Node<@NotNull T> search(@NotNull T value) {
+    public @Nullable Node<T> search(@NotNull T value) {
         if (root == null) {
             return null;
         }
 
-        @NotNull Queue<@NotNull Node<@NotNull T>> queue = new LinkedList<>();
+        @NotNull Queue<Node<T>> queue = new LinkedList<>();
         queue.add(root);
 
         while (!queue.isEmpty()) {
-            @NotNull Node<@NotNull T> node = queue.poll();
+            @NotNull Node<T> node = queue.poll();
 
             if (node.value.equals(value)) {
                 return node;
@@ -200,11 +201,11 @@ public final class BinaryTree<T> {
             return false;
         }
 
-        @NotNull Queue<@NotNull Node<@NotNull T>> queue = new LinkedList<>();
+        @NotNull Queue<Node<T>> queue = new LinkedList<>();
         queue.add(root);
 
         while (!queue.isEmpty()) {
-            @NotNull Node<@NotNull T> node = queue.poll();
+            @NotNull Node<T> node = queue.poll();
 
             if (node.value.equals(value)) {
                 return true;
@@ -232,7 +233,7 @@ public final class BinaryTree<T> {
      *
      * @param node The local root of the binary tree
      */
-    private void inOrder(@Nullable Node<@NotNull T> node) {
+    private void inOrder(@Nullable Node<T> node) {
         if (node == null) return;
         inOrder(node.left);
         System.out.print(node.value + " ");
@@ -284,11 +285,12 @@ public final class BinaryTree<T> {
      * Where each node has a left and right child with a defined pattern.
      *
      * @author Matheus Sousa (https://github.com/omatheus-edev)
+     * @param <T> The type of element in this node
      * */
     public final static class Node<T> {
         @NotNull T value;
-        @Nullable Node<@NotNull T> left;
-        @Nullable Node<@NotNull T> right;
+        @Nullable Node<T> left;
+        @Nullable Node<T> right;
 
         /**
          * Constructor of Node
@@ -303,21 +305,20 @@ public final class BinaryTree<T> {
             return value;
         }
 
-        public @Nullable Node<@NotNull T> getLeft() {
+        public @Nullable Node<T> getLeft() {
             return left;
         }
 
-        public @Nullable Node<@NotNull T> getRight() {
+        public @Nullable Node<T> getRight() {
             return right;
         }
 
-        @SuppressWarnings("DataFlowIssue")
         @Override
         public @NotNull String toString() {
             return "Node{" +
                     "value=" + value +
-                    ", left=" + left.value +
-                    ", right=" + right.value +
+                    ", left=" + (left != null ? left.value : "null") +
+                    ", right=" + (right != null ? right.value : "null") +
                     '}';
         }
     }
