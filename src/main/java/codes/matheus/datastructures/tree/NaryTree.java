@@ -52,19 +52,36 @@ public final class NaryTree<T> {
      *
      * @param parentValue Value of the parent who will receive the new value
      * @param value Value to be inserted
+     * @return Returns the node that was just added.
      */
-    public void insert(@NotNull T parentValue, @NotNull T value) {
+    public @NotNull Node<T> insert(@NotNull T parentValue, @NotNull T value) {
         @NotNull Node<T> node = new Node<>(value);
         if (root == null) {
             this.root = node;
-            return;
+            return node;
         }
 
         @Nullable Node<T> parent = search(parentValue);
 
-        if (parent != null) {
-            parent.addChild(node);
+        if (parent == null) {
+            throw new NoSuchElementException("Parent not found on tree: " + parentValue);
         }
+
+        parent.addChild(node);
+        return node;
+    }
+
+    /**
+     * Insert a vale into a node of the N-ary tree. Using the parent node to optimize the search
+     *
+     * @param parent Node of the parent who will receive the new value
+     * @param value value Value to be inserted
+     * @return Returns the node that was just added.
+     */
+    public @NotNull Node<T> insert(@NotNull Node<T> parent, @NotNull T value) {
+        @NotNull Node<T> node = new Node<>(value);
+        parent.addChild(node);
+        return node;
     }
 
     /**

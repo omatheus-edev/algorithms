@@ -8,56 +8,67 @@ import org.junit.jupiter.api.Test;
 
 import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
+import java.util.Objects;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 public final class NaryTreeTest {
-    private final @NotNull NaryTree<String> tree = new NaryTree<>("Raiz");
+    private final @NotNull NaryTree<String> tree = new NaryTree<>("Root");
 
     @BeforeEach
     void setUp() {
-        tree.insert("Raiz", "PastaA");
-        tree.insert("Raiz", "PastaB");
-        tree.insert("PastaA", "Arq1");
+        tree.insert("Root", "FolderA");
+        tree.insert("Root", "FolderB");
+
+        @NotNull NaryTree.Node<String> nodeA = Objects.requireNonNull(tree.search("FolderA"));
+        assertNotNull(nodeA);
+        tree.insert(nodeA, "File1");
     }
 
     @Test
     void testInsert() {
-        assertTrue(tree.contains("Arq1"));
-        assertTrue(tree.contains("PastaB"));
+        assertTrue(tree.contains("File1"));
+        assertTrue(tree.contains("FolderB"));
 
-        @Nullable NaryTree.Node<String> nodeA = tree.search("PastaA");
+        @Nullable NaryTree.Node<String> nodeA = tree.search("FolderA");
         assertNotNull(nodeA);
         assertEquals(1, nodeA.getChildren().size());
-        assertEquals("Arq1", nodeA.getChildren().get(0).getValue());
+        assertEquals("File1", nodeA.getChildren().get(0).getValue());
+    }
+
+    @Test
+    void testInsertReturnsNode() {
+        @NotNull NaryTree.Node<String> newNode = tree.insert("FolderB", "File2");
+        assertNotNull(newNode);
+        assertEquals("File2", newNode.getValue());
     }
 
     @Test
     void testSearchNotFound() {
-        assertFalse(tree.contains("Inexistente"));
-        assertNull(tree.search("Inexistente"));
+        assertFalse(tree.contains("non-existent"));
+        assertNull(tree.search("non-existent"));
     }
 
     @Test
     void testRemoveLeaf() {
-        tree.remove("Arq1");
-        assertFalse(tree.contains("Arq1"));
-        assertTrue(tree.contains("PastaA"), "PastaA deve continuar existindo");
+        tree.remove("File1");
+        assertFalse(tree.contains("File1"));
+        assertTrue(tree.contains("FolderA"));
     }
 
     @Test
     void testRemoveSubtree() {
-        tree.remove("PastaA");
-        assertFalse(tree.contains("PastaA"));
-        assertFalse(tree.contains("Arq1"), "A subárvore de PastaA deveria ter sido removida");
-        assertTrue(tree.contains("Raiz"));
+        tree.remove("FolderA");
+        assertFalse(tree.contains("FolderA"));
+        assertFalse(tree.contains("File1"));
+        assertTrue(tree.contains("Root"));
     }
 
     @Test
     void testRemoveRoot() {
-        tree.remove("Raiz");
-        assertFalse(tree.contains("Raiz"));
-        assertFalse(tree.contains("PastaB"));
+        tree.remove("Root");
+        assertFalse(tree.contains("Root"));
+        assertFalse(tree.contains("FolderB"));
     }
 
     @Test
@@ -68,7 +79,7 @@ public final class NaryTreeTest {
         tree.preOrder();
 
         @NotNull String output = outContent.toString().trim();
-        assertTrue(output.startsWith("Raiz PastaA Arq1 PastaB"));
+        assertTrue(output.startsWith("Root FolderA File1 FolderB"));
 
         System.setOut(System.out);
     }
@@ -82,7 +93,7 @@ public final class NaryTreeTest {
 
         assertTrue(intTree.contains(100));
         intTree.remove(10);
-        assertFalse(intTree.contains(100), "Ao remover o 10, o 100 deve sumir");
+        assertFalse(intTree.contains(100));
     }
 
 }
