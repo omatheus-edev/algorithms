@@ -47,6 +47,10 @@ public final class NaryTree<T> {
     public NaryTree() {
     }
 
+    public @Nullable Node<T> getRoot() {
+        return root;
+    }
+
     /**
      * Insert a vale into a node of the N-ary tree
      *
@@ -195,6 +199,7 @@ public final class NaryTree<T> {
     public final static class Node<T> {
         @NotNull T value;
         private @Nullable List<Node<T>> children;
+        private @Nullable Node<T> parent;
 
         /**
          * Constructor of node
@@ -203,6 +208,7 @@ public final class NaryTree<T> {
          */
         public Node(@NotNull T value) {
             this.value = value;
+            this.parent = null;
         }
 
         public @NotNull T getValue() {
@@ -216,6 +222,16 @@ public final class NaryTree<T> {
             return Collections.unmodifiableList(children);
         }
 
+        public @Nullable Node<T> getParent() {
+            return parent;
+        }
+
+        public void clear() {
+            if (children != null) {
+                children.clear();
+            }
+        }
+
         /**
          * Adds a child to the node
          *
@@ -226,14 +242,16 @@ public final class NaryTree<T> {
                 this.children = new ArrayList<>();
             }
             children.add(child);
+            child.parent = this;
         }
 
         @Override
         public @NotNull String toString() {
             return "Node {" +
-                    "value=" + value +
-                    "length=" + (children != null ? children : "null") +
-                    "children=" + children;
+                    " value=" + value +
+                    " length=" + (children != null ? children : "null") +
+                    " children=" + children +
+                    "}";
         }
     }
 }

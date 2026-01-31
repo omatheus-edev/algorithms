@@ -34,6 +34,8 @@ public final class NaryTreeTest {
         assertNotNull(nodeA);
         assertEquals(1, nodeA.getChildren().size());
         assertEquals("File1", nodeA.getChildren().get(0).getValue());
+        assertNotNull(nodeA.getParent().getValue());
+        assertEquals("Root", nodeA.getParent().getValue());
     }
 
     @Test
