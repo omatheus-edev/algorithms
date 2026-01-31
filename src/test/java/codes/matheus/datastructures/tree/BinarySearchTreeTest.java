@@ -1,6 +1,5 @@
-package datastructures.tree;
+package codes.matheus.datastructures.tree;
 
-import codes.matheus.datastructures.tree.BinarySearchTree;
 import org.jetbrains.annotations.NotNull;
 import org.junit.jupiter.api.Test;
 

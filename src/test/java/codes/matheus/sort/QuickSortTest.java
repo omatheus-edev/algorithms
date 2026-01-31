@@ -1,6 +1,5 @@
-package sort;
+package codes.matheus.sort;
 
-import codes.matheus.sort.QuickSort;
 import org.jetbrains.annotations.NotNull;
 import org.junit.jupiter.api.Test;
 

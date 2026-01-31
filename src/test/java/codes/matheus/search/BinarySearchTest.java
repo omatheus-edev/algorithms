@@ -1,6 +1,5 @@
-package search;
+package codes.matheus.search;
 
-import codes.matheus.search.BinarySearch;
 import org.jetbrains.annotations.NotNull;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;

@@ -1,6 +1,5 @@
-package datastructures.tree;
+package codes.matheus.datastructures.tree;
 
-import codes.matheus.datastructures.tree.NaryTree;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.junit.jupiter.api.BeforeEach;
