@@ -37,8 +37,8 @@ import org.jetbrains.annotations.Range;
  * @param <T> The type of elements in this list
  */
 public final class DoublyLinkedList<T> {
-    private @Nullable Node<T> head;
-    private @Nullable Node<T> tail;
+    private Node<T> head;
+    private Node<T> tail;
     @Range(from = 0, to = Integer.MAX_VALUE)
     private int size = 0;
 
@@ -157,6 +157,12 @@ public final class DoublyLinkedList<T> {
      */
     public boolean remove(@NotNull T value) {
         if (head == null) return false;
+        if (size == 1) {
+            head = null;
+            tail = null;
+            size = 0;
+            return true;
+        }
 
         @Nullable Node<T> current = head;
 
@@ -179,6 +185,16 @@ public final class DoublyLinkedList<T> {
     public boolean remove(int index) {
         if (index < 0 || index >= size) {
             return false;
+        }
+        if (head == null) {
+            return false;
+        }
+
+        if (size == 1) {
+            head = null;
+            tail = null;
+            size = 0;
+            return true;
         }
 
         @NotNull Node<T> current = head;
@@ -234,8 +250,8 @@ public final class DoublyLinkedList<T> {
      */
     public final static class Node<T> {
         @NotNull T value;
-        private @Nullable Node<T> previous;
-        private @Nullable Node<T> next;
+        private Node<T> previous;
+        private Node<T> next;
 
         /**
          * Constructor of node
