@@ -59,6 +59,7 @@ public final class DoublyLinkedList<T> {
     public DoublyLinkedList(@NotNull T head) {
         this.head = new Node<>(head);
         this.tail = this.head;
+        size++;
     }
 
     /**
@@ -229,6 +230,12 @@ public final class DoublyLinkedList<T> {
         return size;
     }
 
+    /**
+     * Method to check if the list contains a value
+     *
+     * @param value Value to look for
+     * @return Returns true or false depending on whether the list contains the value.
+     */
     public boolean contains(@NotNull T value) {
         @NotNull Node<T> current = head;
 
@@ -239,6 +246,26 @@ public final class DoublyLinkedList<T> {
             current = current.next;
         }
         return false;
+    }
+
+    /**
+     * Calculates the index of element in the list
+     *
+     * @param value Index of the value to be searched
+     * @return Returns index of value or -1 if not found
+     */
+    public int indexOf(@NotNull T value) {
+        @NotNull Node<T> current = head;
+        int index = 0;
+
+        while (current != null) {
+            if (current.getValue().equals(value)) {
+                return index;
+            }
+            current = current.next;
+            index++;
+        }
+        return -1;
     }
 
     /**

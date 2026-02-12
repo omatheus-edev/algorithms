@@ -329,7 +329,7 @@ public final class MidLinkedList<T> {
     }
 
     /**
-     *
+     * Calculates the index of element in the list
      *
      * @param value Index of the value to be searched
      * @return Returns index of value or -1 if not found
