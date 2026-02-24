@@ -4,6 +4,13 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.jetbrains.annotations.Range;
 
+import java.util.Iterator;
+import java.util.NoSuchElementException;
+import java.util.Spliterator;
+import java.util.Spliterators;
+import java.util.stream.Stream;
+import java.util.stream.StreamSupport;
+
 /**
  * This class represents an optimized Doubly Linked List data structure, named MidLinkedList.
  *
@@ -41,7 +48,7 @@ import org.jetbrains.annotations.Range;
  * @param <T> The type of elements in this list
  * @author Matheus Sousa (https://github.com/omatheus-edev)
  */
-public final class MidLinkedList<T> {
+public final class MidLinkedList<T> implements Iterable<T> {
     private Node<T> head;
     private Node<T> tail;
     private Node<T> mid;
@@ -380,6 +387,31 @@ public final class MidLinkedList<T> {
      */
     public boolean contains(@NotNull T value) {
         return indexOf(value) != -1;
+    }
+
+    @Override
+    public @NotNull Iterator<T> iterator() {
+        return new Iterator<T>() {
+            private @Nullable Node<T> current = head;
+
+            @Override
+            public boolean hasNext() {
+                return current != null;
+            }
+
+            @Override
+            public T next() {
+                if (!hasNext()) throw new NoSuchElementException();
+                @NotNull T value = current.value;
+                current = current.next;
+                return value;
+            }
+        };
+    }
+
+    public @NotNull Stream<T> stream() {
+        @NotNull Spliterator<T> spliterator = Spliterators.spliteratorUnknownSize(iterator(), Spliterator.ORDERED);
+        return StreamSupport.stream(spliterator, false);
     }
 
     @Override

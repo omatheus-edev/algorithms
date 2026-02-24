@@ -4,6 +4,9 @@ import org.jetbrains.annotations.NotNull;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 
+import java.util.Iterator;
+import java.util.List;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 public final class MidLinkedListTest {
@@ -147,4 +150,45 @@ public final class MidLinkedListTest {
         }
     }
 
+    @Nested
+    class IteratorTests {
+        @Test
+        void testTraverseList() {
+            list.add("A");
+            list.add("B");
+            list.add("C");
+
+            @NotNull Iterator<String> it = list.iterator();
+            assertEquals("A", it.next());
+            assertEquals("B", it.next());
+            assertEquals("C", it.next());
+            assertFalse(it.hasNext());
+        }
+    }
+
+    @Nested
+    class StreamTests {
+        @Test
+        void testStreamFilter() {
+            list.add("A");
+            list.add("B");
+            list.add("C");
+
+            @NotNull List<String> result = list.stream().filter(s -> !s.equals("B")).toList();
+            assertEquals(List.of("A", "C"), result);
+        }
+
+        @Test
+        void testStreamMap() {
+            list.add("A");
+            list.add("B");
+            list.add("C");
+
+            @NotNull List<String> result = list.stream()
+                    .map(String::toLowerCase)
+                    .toList();
+
+            assertEquals(List.of("a", "b", "c"), result);
+        }
+    }
 }
